@@ -55,6 +55,7 @@ daily_notes/
 ├── week_07/
 └── week_08/
 
+LICENSE
 README.md
 ```
 
@@ -77,3 +78,11 @@ README.md
 ## Learning Approach
 
 I document concepts, labs, troubleshooting steps, and key takeaways daily to reinforce understanding and build a long-term technical knowledge base.
+
+## License
+
+The contents of this repository are licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+You may share and adapt the material provided appropriate credit is given.
+
+https://creativecommons.org/licenses/by/4.0/
