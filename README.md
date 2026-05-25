@@ -4,7 +4,7 @@
 
 # AWS re/Start Learning Journey
 
-This repository contains my daily learning notes from the AWS re/Start program.
+This repository documents my AWS re/Start learning journey through daily notes, hands-on labs, troubleshooting exercises, and technical concepts related to cloud computing, Linux, Python, databases, Git, and networking.
 
 Topics covered include:
 - AWS Cloud Fundamentals
@@ -13,6 +13,15 @@ Topics covered include:
 - SQL & Database Fundamentals
 - Git & GitHub
 - Networking Fundamentals
+
+## Table of Contents
+
+- Purpose
+- Learning Progress
+- Repository Structure
+- Skills Demonstrated
+- Current Focus
+- Learning Approach
 
 ## Purpose
 
@@ -58,6 +67,12 @@ README.md
 - SQL Query Writing
 - Database Design Fundamentals
 - TCP/IP Networking Concepts
+
+## Current Focus
+
+- AWS Certified Cloud Practitioner (CLF-C02)
+- SQL & Database Fundamentals
+- Python Automation
 
 ## Learning Approach
 
