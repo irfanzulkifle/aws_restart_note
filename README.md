@@ -16,12 +16,12 @@ Topics covered include:
 
 ## Table of Contents
 
-- Purpose
-- Learning Progress
-- Repository Structure
-- Skills Demonstrated
-- Current Focus
-- Learning Approach
+- [Purpose](#purpose)
+- [Learning Progress](#learning-progress)
+- [Repository Structure](#repository-structure)
+- [Skills Demonstrated](#skills-demonstrated)
+- [Current Focus](#current-focus)
+- [Learning Approach](#learning-approach)
 
 ## Purpose
 
