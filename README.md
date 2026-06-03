@@ -6,7 +6,7 @@
 
 This repository documents my AWS re/Start learning journey through daily notes, hands-on labs, troubleshooting exercises, and technical concepts related to cloud computing, Linux, Python, databases, Git, and networking.
 
-Topics covered include:
+## Areas of Study
 - AWS Cloud Fundamentals
 - Linux Administration
 - Python Programming
