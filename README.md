@@ -19,9 +19,10 @@ This repository documents my AWS re/Start learning journey through daily notes, 
 - [Purpose](#purpose)
 - [Learning Progress](#learning-progress)
 - [Repository Structure](#repository-structure)
+- [How to Navigate](#how-to-navigate)
 - [Skills Demonstrated](#skills-demonstrated)
-- [Current Focus](#current-focus)
 - [Learning Approach](#learning-approach)
+- [License](#license)
 
 ## Purpose
 
@@ -37,47 +38,100 @@ This repository serves as:
 - ✅ Networking Fundamentals
 - ✅ Git & GitHub
 - ✅ Python Fundamentals
-- 🔄 SQL & Database Fundamentals
-- ⏳ AWS Cloud Practitioner Preparation
+- ✅ SQL & Database Fundamentals
+- 🔄 AWS Cloud Practitioner (CLF-C02) Preparation
 
-Current Week: Week 09
-Total Notes Published: 24
+**Current Week:** Week 10
+**Total Daily Notes:** 30
 
 ## Repository Structure
 
 ```text
 daily_notes/
-├── week_02/
 ├── week_03/
+│   ├── 2026-04-13.md
+│   └── weekly_summary.md
 ├── week_04/
+│   ├── 2026-04-20.md
+│   ├── 2026-04-21.md
+│   ├── 2026-04-22.md
+│   ├── 2026-04-23.md
+│   ├── 2026-04-24.md
+│   └── weekly_summary.md
 ├── week_05/
+│   ├── 2026-04-27.md
+│   ├── 2026-04-28.md
+│   ├── 2026-04-29.md
+│   ├── 2026-04-30.md
+│   └── weekly_summary.md
 ├── week_06/
+│   ├── 2026-05-05.md
+│   ├── 2026-05-06.md
+│   ├── 2026-05-07.md
+│   └── weekly_summary.md
 ├── week_07/
-└── week_08/
+│   ├── 2026-05-11.md
+│   ├── 2026-05-12.md
+│   ├── 2026-05-13.md
+│   ├── 2026-05-14.md
+│   ├── 2026-05-15.md
+│   └── weekly_summary.md
+├── week_08/
+│   ├── 2026-05-18.md
+│   ├── 2026-05-19.md
+│   ├── 2026-05-20.md
+│   ├── 2026-05-21.md
+│   ├── 2026-05-22.md
+│   ├── 2026-05-24.md
+│   └── weekly_summary.md
+├── week_09/
+│   ├── 2026-05-25.md
+│   ├── 2026-05-26.md
+│   ├── 2026-05-28.md
+│   ├── 2026-05-29.md
+│   ├── 2026-05-30.md
+│   └── weekly_summary.md
+├── week_10/
+│   ├── 2026-06-03.md
+│   └── weekly_summary.md
+└── weekly_summary_index.md
+
+exam_prep/
+└── clf_c02_cheatsheet.md
 
 LICENSE
 README.md
 ```
 
+## How to Navigate
+
+There are three layers of content for different needs:
+
+| Layer | What | Use When |
+|-------|------|----------|
+| **Daily Notes** | Full lecture notes with details, code, and diagrams | Deep review of a specific day |
+| **Weekly Summary** | Condensed overview of each week with topic links | Quick review of what was covered |
+| **Exam Cheat Sheet** | All CLF-C02 content consolidated by exam domain | Exam preparation |
+
+Start from the [Weekly Summary Index](./daily_notes/weekly_summary_index.md) to jump to any week, or go to the [CLF-C02 Exam Cheat Sheet](./exam_prep/clf_c02_cheatsheet.md) for exam prep.
+
 ## Skills Demonstrated
 
-- AWS Core Services
-- Linux Command Line
+- AWS Core Services (EC2, VPC, S3, RDS, Lambda, IAM, and more)
+- Linux Command Line & System Administration
+- Python Programming & Automation
+- SQL Query Writing & Database Design
 - Git Version Control
-- Python Scripting
-- SQL Query Writing
-- Database Design Fundamentals
-- TCP/IP Networking Concepts
-
-## Current Focus
-
-- AWS Certified Cloud Practitioner (CLF-C02)
-- SQL & Database Fundamentals
-- Python Automation
+- TCP/IP Networking & Security Concepts
 
 ## Learning Approach
 
-I document concepts, labs, troubleshooting steps, and key takeaways daily to reinforce understanding and build a long-term technical knowledge base.
+Each daily note follows a consistent structure:
+1. **Key Takeaways** — 5-7 bullet TL;DR at the top
+2. **Detailed Notes** — full lecture content with code examples
+3. **CLF-C02 Relevance** — exam-relevant topics highlighted
+
+This multi-layer approach allows quick skimming or deep review depending on the need.
 
 ## License
 
