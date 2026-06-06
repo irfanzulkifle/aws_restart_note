@@ -75,6 +75,70 @@
 - **AWS CloudFormation** (AWS-native IaC)
 - **Terraform** (third-party, multi-cloud)
 
+## AWS Cloud Adoption Framework (CAF)
+- **Planning tool** for transitioning from on-premises to cloud
+- **6 Perspectives** — 3 Business + 3 Technical
+
+| Category | Perspective | Focus Areas |
+|----------|-------------|-------------|
+| **Business** | Business | IT finance, strategy, benefit realization, risk management |
+| | People | Change management, training, skills readiness |
+| | Governance | Project management, performance, license management |
+| **Technical** | Platform | Compute (EC2), network (VPC), storage (EBS/S3), app design |
+| | Security | IAM, data protection, security controls, incident response |
+| | Operations | Monitoring, maintenance, performance, disaster recovery |
+
+> Key: Even if technology is ready, failure to train people or align governance will cause migration to fail
+
+## AWS Well-Architected Framework (WAF)
+- **Design/operational tool** for building cloud systems efficiently, securely, cost-effectively
+- Post-migration tool (CAF = planning, WAF = building/operating)
+
+| Pillar | Core Question |
+|--------|---------------|
+| **Operational Excellence** | Are we delivering business value and improving? |
+| **Security** | Are we protecting systems and data? |
+| **Reliability** | Can the system recover and meet demand? |
+| **Performance Efficiency** | Are we using resources efficiently? |
+| **Cost Optimization** | Are we eliminating waste? |
+| **Sustainability** | Is cloud usage environmentally responsible? |
+
+### Well-Architected Design Principles
+- **Stop guessing capacity** — use Auto Scaling
+- **Test systems at production scale** — duplicate, test, shut down
+- **Automate to ease experimentation** — code-based provisioning (Terraform, Python)
+- **Allow for evolutionary architectures** — design for change
+- **Drive architecture using data** — data-driven decisions
+- **Improve through game days** — simulate failures, practice recovery
+
+## Reliability & High Availability
+| Term | Definition | Measurement |
+|------|-----------|-------------|
+| **Reliability** | System works as expected | MTBF = Time ÷ Failures |
+| **Availability** | System is up and running | % uptime ("nines") |
+
+### The "Nines" Scale
+| Nines | % | Max Downtime/Year |
+|-------|---|-------------------|
+| 3-nines | 99.9% | ~8.7 hours |
+| 4-nines | 99.99% | ~52 minutes |
+| 5-nines | 99.999% | ~5 minutes |
+
+### High Availability — 3 Prime Factors
+1. **Fault Tolerance** — redundant components (Multi-AZ)
+2. **Scalability** — Auto Scaling
+3. **Recoverability** — restore after failure/disaster
+
+### Traditional → AWS Service Mapping
+| Traditional | AWS |
+|-------------|-----|
+| Physical server | EC2 |
+| Load balancer | ELB |
+| SAN storage | EBS |
+| NAS storage | EFS |
+| Tape backup | S3 |
+| Active Directory | AWS Directory Service |
+
 ---
 
 # Domain 2: Security and Compliance (30%)
@@ -301,20 +365,54 @@ Perimeter → Network → Endpoint → Application → Data
 | **Amazon Redshift** | SQL (Analytics) | Data warehouse for analytics and reporting |
 
 ### RDS Key Concepts
-- **Fully managed:** AWS handles provisioning, patching, backups, scaling
-- **Multi-AZ:** Primary + standby replica in different AZs; automatic failover = high availability
-- **Read Replicas:** For read-heavy workloads (performance, not HA)
+- **Fully managed:** AWS handles provisioning, patching, backups, scaling, hardware
+- **DB Instance Classes:** T3 (general), M/R (memory optimized), X (high performance)
+- **Storage types:** Magnetic (legacy), GP2/GP3 (general), IO1/IO2 (high-throughput)
+- **Zero-downtime storage scaling** — unlike EBS volumes on EC2
 - **DB Subnet Group:** Defines which private subnets RDS deploys in
 - **Not publicly accessible** by default (placed in private subnet)
 - Security Group allows traffic only from web tier (port 3306)
+
+### Multi-AZ vs Read Replicas (Heavily Tested)
+| Feature | Multi-AZ | Read Replica |
+|---------|----------|-------------|
+| **Purpose** | High Availability / Failover | Scalability / Read Performance |
+| **Can serve reads?** | No (standby is idle) | Yes |
+| **Automatic failover?** | Yes | No |
+| **Replication** | Synchronous | Asynchronous |
 
 ### RDS vs Self-Managed DB on EC2
 | | Amazon RDS | EC2 + Database |
 |-|-----------|----------------|
 | Management | AWS manages engine, patching, backups | You manage everything |
 | Setup | Click and use | Install and configure manually |
-| Scaling | Easy (console/CLI) | Manual effort |
+| Scaling | Easy (console/CLI), zero-downtime storage | Manual effort, may require downtime |
 | Cost | Higher (pay for management) | Lower (but more work) |
+
+### Amazon Aurora
+- AWS's **proprietary, cloud-native** relational DB engine (part of RDS)
+- Compatible with MySQL and PostgreSQL — existing tools work without modification
+- Generally **faster** than standard MySQL/PostgreSQL; slightly more expensive
+- **Aurora Clusters:** primary instance (read/write) + Aurora replicas (read-only)
+- Uses **reader endpoints** and **writer endpoints** to route traffic
+- Use cases: enterprise applications, SaaS platforms, online/mobile gaming
+
+### Amazon DynamoDB
+- Fully managed **NoSQL** database service
+- **Key-value store**; no fixed schema — items in same table can have different attributes
+- **Primary Key:** simple (partition key only) or composite (partition key + sort key)
+- **Partition Key** determines storage location; **Sort Key** orders items within partition
+- **Global Tables:** multi-region replication for low latency and disaster recovery
+- **DAX (DynamoDB Accelerator):** in-memory cache for DynamoDB (like Redis, DynamoDB-specific)
+- Automatic encryption at rest; automatic backups; built-in scalability and fault tolerance
+
+### DynamoDB Terminology
+| DynamoDB Term | SQL Equivalent |
+|---------------|---------------|
+| Table | Table |
+| Item | Row / Record |
+| Attribute | Column / Field |
+| Primary Key | Primary Key |
 
 ### SQL vs NoSQL
 | Feature | SQL (RDS/Aurora) | NoSQL (DynamoDB) |
@@ -530,9 +628,32 @@ Private Subnet ─── RDS Database ─── DB Security Group (3306 from web
 17. **VPC cannot span regions** but can span AZs
 18. **Subnets are AZ-specific** (one subnet = one AZ)
 19. **NAT Gateway** requires Elastic IP and must be in a public subnet
-20. **RDS in private subnet** = not directly accessible from internet
+26. **RDS in private subnet** = not directly accessible from internet
+27. **Multi-AZ** = standby is idle (not used for reads); only activates on failover
+28. **Read Replica** = can serve reads but has no automatic failover
+29. **Aurora** is part of RDS — it's an RDS engine, not a separate service
+30. **DAX** is for DynamoDB only — not a general-purpose cache like Redis
+31. **DynamoDB Global Tables** = multi-region replication (latency + disaster recovery)
+32. **CAF** = planning tool (6 perspectives: 3 business + 3 technical)
+33. **WAF** = design/operational tool (6 pillars: Ops Excellence, Security, Reliability, Perf Efficiency, Cost Optimization, Sustainability)
+34. **Reliability** = works as expected (MTBF); **Availability** = is running (% uptime "nines")
+35. **High Availability** = Fault Tolerance + Scalability + Recoverability — know all 3
+36. **Auto Scaling** = stop guessing capacity (well-architected principle)
+
+### Quick Memory Aids
+```
+Multi-AZ     → Availability (failover, resilience)
+Read Replica → Scalability (read performance, load distribution)
+
+RDS          → SQL / Relational databases (MySQL, PostgreSQL, Aurora, etc.)
+Aurora       → AWS's own engine, faster than MySQL/PG, still part of RDS
+DynamoDB     → NoSQL / Key-value (flexible schema, massive scale)
+
+DAX          → DynamoDB's built-in cache (like Redis, but only for DynamoDB)
+Global Tables → DynamoDB across multiple regions
+```
 
 ---
 
 *Consolidated from daily lecture notes, Weeks 3–10 | AWS re/Start Cohort 3: Project CloudIgnite*
-*Last updated: June 4, 2026*
+*Last updated: June 6, 2026*
