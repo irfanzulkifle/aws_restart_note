@@ -12,7 +12,7 @@
 | **Week 7** | May 11–15 | Compliance, AWS Support, Python Introduction, Data Types, Functions, Git, AWS Lambda | [week_07/weekly_summary.md](./week_07/weekly_summary.md) |
 | **Week 8** | May 18–24 | Python Modules, File Handling, JSON, SysAdmin with Python, DevOps, CI/CD, Testing | [week_08/weekly_summary.md](./week_08/weekly_summary.md) |
 | **Week 9** | May 25–30 | Database Fundamentals, SQL (DDL, DML, DQL), NULL, Aggregate Functions, MySQL Labs | [week_09/weekly_summary.md](./week_09/weekly_summary.md) |
-| **Week 10** | Jun 3–5 | SQL Advanced, Amazon RDS, Aurora, DynamoDB, CAF, Well-Architected Framework | [week_10/weekly_summary.md](./week_10/weekly_summary.md) |
+| **Week 10** | Jun 3–6 | SQL Advanced, Amazon RDS, Aurora, DynamoDB, CAF, Well-Architected Framework, SQL JOINs, Database Normalization | [week_10/weekly_summary.md](./week_10/weekly_summary.md) |
 
 ---
 

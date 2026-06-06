@@ -1,4 +1,4 @@
-# Week 10 Summary — June 3–5, 2026
+# Week 10 Summary — June 3–6, 2026
 **AWS re/Start Cohort 3: Project CloudIgnite**
 
 ---
@@ -121,6 +121,42 @@
 - Connect from EC2 instance via SSH
 - Run SQL queries against the database
 
+### RDS/Aurora/DynamoDB Labs, SQL JOINs & Database Normalization (Fri Jun 6)
+
+#### RDS Lab 160 (MySQL)
+- **Security Group** = bridge between EC2 and RDS; source = Web Security Group (not IP)
+- **DB Subnet Group** = RDS-level construct defining which private subnets to use
+- Lab steps: Create SG → Create DB Subnet Group → Launch RDS (db.t3.medium, 20GB, MySQL) → Install MySQL client on EC2 → Connect via endpoint
+
+#### Aurora
+- Automatic Multi-AZ replication (don't manually create replicas)
+- **Writer endpoint** = read + write; **Reader endpoint** = read-only
+- Aurora cluster = server; can hold multiple databases inside
+
+#### DynamoDB (Lab)
+- Schema-flexible: each item can have different attributes with no errors
+- **Query** = fast, uses Partition Key + optional Sort Key
+- **Scan** = reads all items then filters (slow on large tables)
+
+#### SQL JOINs (Practice)
+| Join | Returns |
+|------|---------|
+| INNER JOIN | Only matching rows from both tables |
+| LEFT JOIN | All left + matching right (NULL where no match) |
+| RIGHT JOIN | All right + matching left |
+| FULL OUTER JOIN | All rows from both tables |
+| CROSS JOIN | Every possible combination (Cartesian product) |
+
+#### Database Normalization
+- Separate tables eliminate redundant data (store country name once, reference by `country_id`)
+- Prevents anomalies: update one record, reflects everywhere
+- Saves storage and maintains data integrity
+
+#### Database Migration to AWS
+- **AWS DMS** (Database Migration Service): migrate existing on-prem databases to AWS; supports continuous replication while old DB stays live
+- **Manual (`mysqldump`)**: small DBs — export → upload to S3 → import to RDS
+- **AWS MGN** (Application Migration Service): migrate full infrastructure (servers, apps), not just databases
+
 ### Key CLF-C02 Connections
 - **Amazon RDS:** Core database service — fully managed, multiple engines, automatic patching/backups
 - **Amazon Aurora:** AWS-native high-performance relational DB; MySQL/PostgreSQL compatible
@@ -140,4 +176,6 @@
 
 ## Daily Notes
 - [June 3](./2026-06-03.md) — SQL Advanced (ORDER BY, GROUP BY, HAVING, UNION, JOIN, Window Functions), Amazon RDS Lab 160
+- [June 4](./2026-06-04.md) — Amazon RDS Deep Dive, Aurora, DynamoDB, Labs 274–275
 - [June 5](./2026-06-05.md) — AWS Cloud Adoption Framework (CAF), Well-Architected Framework, Reliability & HA, Lab 16
+- [June 6](./2026-06-06.md) — RDS/Aurora/DynamoDB Labs, SQL JOINs, Database Normalization, AWS DMS

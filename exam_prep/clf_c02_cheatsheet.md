@@ -371,7 +371,7 @@ Perimeter → Network → Endpoint → Application → Data
 - **Zero-downtime storage scaling** — unlike EBS volumes on EC2
 - **DB Subnet Group:** Defines which private subnets RDS deploys in
 - **Not publicly accessible** by default (placed in private subnet)
-- Security Group allows traffic only from web tier (port 3306)
+- **Security Group = bridge** between EC2 and RDS; source must be the Web Security Group (not an IP)
 
 ### Multi-AZ vs Read Replicas (Heavily Tested)
 | Feature | Multi-AZ | Read Replica |
@@ -394,8 +394,31 @@ Perimeter → Network → Endpoint → Application → Data
 - Compatible with MySQL and PostgreSQL — existing tools work without modification
 - Generally **faster** than standard MySQL/PostgreSQL; slightly more expensive
 - **Aurora Clusters:** primary instance (read/write) + Aurora replicas (read-only)
-- Uses **reader endpoints** and **writer endpoints** to route traffic
+- **Automatic Multi-AZ replication** — don't manually create replicas
+- **Writer endpoint** = read + write; **Reader endpoint** = read-only
 - Use cases: enterprise applications, SaaS platforms, online/mobile gaming
+
+### Database Migration
+| Service | Purpose |
+|---------|---------|
+| **AWS DMS** | Migrate existing on-prem databases to AWS; continuous replication |
+| **AWS MGN** | Migrate full infrastructure (servers, apps) to AWS |
+| **mysqldump + S3** | Manual method for small databases: export → upload to S3 → import to RDS |
+
+### SQL JOINs
+| Join Type | Description |
+|-----------|-------------|
+| **INNER JOIN** | Only matching rows from both tables |
+| **LEFT JOIN** | All rows from left table + matching right |
+| **RIGHT JOIN** | All rows from right table + matching left |
+| **FULL OUTER JOIN** | All rows from both tables |
+| **CROSS JOIN** | Every possible combination (Cartesian product) |
+
+### Database Normalization
+- Separate tables eliminate redundant data
+- Prevents data anomalies (update one record, reflects everywhere)
+- Saves storage and maintains data integrity
+- Store `country_id` instead of duplicating full country data
 
 ### Amazon DynamoDB
 - Fully managed **NoSQL** database service
@@ -656,4 +679,4 @@ Global Tables → DynamoDB across multiple regions
 ---
 
 *Consolidated from daily lecture notes, Weeks 3–10 | AWS re/Start Cohort 3: Project CloudIgnite*
-*Last updated: June 6, 2026*
+*Last updated: June 6, 2026 (includes June 6 notes)*
