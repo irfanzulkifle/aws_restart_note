@@ -312,13 +312,16 @@ Perimeter → Network → Endpoint → Application → Data
 
 ### Amazon EC2 (Elastic Compute Cloud)
 - Virtual servers in the cloud (IaaS)
-- **Instance types** determine compute capacity and cost (e.g., `t3.micro`)
+- **Instance types** determine compute capacity and cost: T (General Purpose), C (Compute Optimized), R/X (Memory Optimized), I/D (Storage Optimized), P/G (Accelerated Computing), Hpc (High Performance Compute)
 - **Pricing models:** On-Demand, Reserved (1–3 yr), Spot (up to 90% off), Dedicated
 - **Lifecycle:** Launch → Running → Stop → Start → Terminate
 - **Key fact:** Stopped instance loses its public IP (use Elastic IP to keep it)
 - **Private IP** is retained across stop/start
-- **AMI** (Amazon Machine Image) defines the OS and software
-- **User Data** script runs on first boot (e.g., install Apache)
+- **AMI** (Amazon Machine Image) defines the OS and software; sources: AWS-provided, community, custom
+- **User Data** script runs once at first boot (e.g., install Apache)
+- **Instance Metadata Service:** `http://169.254.169.254/latest/meta-data/` — accessible only from within EC2; returns instance info (ID, type, hostname, AMI ID, etc.)
+- **Instance Profile** = IAM Role attached to EC2; enables EC2 to access AWS services without storing credentials
+- **Connection methods ranked by security:** SSM Session Manager (no ports, no keys, fully logged) > EC2 Instance Connect (port 22, browser) > SSH (port 22, .pem key)
 
 ### Amazon Lambda
 - **Serverless** compute — no servers to manage
@@ -347,6 +350,9 @@ Perimeter → Network → Endpoint → Application → Data
 - Object storage; stores files (objects) in buckets
 - Can trigger Lambda functions on file upload
 - Storage classes for different access patterns and costs
+- **Static website hosting:** no servers, cost-effective, automatic scalability; bucket names must be globally unique; endpoint format: `http://<bucket>.s3-website-<region>.amazonaws.com`; requires disabling Block Public Access and enabling ACLs
+- **S3 CLI automation:** `aws s3 sync` (only changed files) preferred over `aws s3 cp --recursive` (re-uploads everything)
+- **Custom domain:** Use Route 53 to map domain to S3 endpoint
 
 ### Amazon EBS (Elastic Block Store)
 - Block storage attached to EC2 instances (like a virtual hard disk)
@@ -522,13 +528,23 @@ Perimeter → Network → Endpoint → Application → Data
 |---------|---------|
 | **AWS CloudWatch** | Monitoring metrics (CPU, network), logs, alarms |
 | **AWS CloudTrail** | Audit logging of all API calls |
-| **AWS Systems Manager** | Manage EC2 instances; **Session Manager** for secure SSH-less access |
+| **AWS Systems Manager** | Manage EC2 instances; **Fleet Manager** (inventory), **Run Command** (execute scripts across instances), **Session Manager** (SSH-less secure access), **Parameter Store** (store secrets/config), **Patch Manager**, **State Manager** |
 | **AWS Cloud9** | Browser-based IDE running on EC2 |
 | **AWS CodeCommit** | Managed Git repository |
 | **AWS CodeBuild** | Managed build/test service |
 | **AWS CodeDeploy** | Automated deployment to EC2, Lambda, etc. |
 | **AWS CodePipeline** | End-to-end CI/CD orchestration |
 | **AWS CloudFormation** | Infrastructure as Code (IaC) |
+
+### AWS Command Line Interface (CLI)
+- Terminal-based AWS management
+- Installation: download zip → unzip → `sudo ./aws/install`
+- Configuration: `aws configure` (stores keys in `~/.aws/credentials` and `~/.aws/config`)
+- Output formats: `json`, `table`, `text`
+- Common commands: `aws ec2 describe-instances`, `aws s3 ls`, `aws iam list-users`
+- **Dry run:** `--dry-run` simulates command to check permissions without execution
+- CLI is **instance-specific** — configure on each EC2 separately
+- **Three access methods** for AWS: Management Console (GUI), AWS CLI, AWS SDK
 
 ## IoT & Other Services
 
@@ -666,6 +682,15 @@ Private Subnet ─── RDS Database ─── DB Security Group (3306 from web
 38. **Aurora** has automatic Multi-AZ — do NOT manually create replicas
 39. **DMS** = Database Migration Service (on-prem → AWS); **mysqldump + S3** = manual method for small DBs
 40. **SSM Session Manager** = browser-based EC2 access without SSH; no port 22/key pairs needed
+41. **S3 static website hosting** = no servers to manage, cost-effective, automatic scaling; bucket names must be globally unique
+42. **aws s3 sync** uploads only changed files (preferred for automation); `aws s3 cp --recursive` re-uploads everything
+43. **EC2 instance types:** T (General Purpose), C (Compute Optimized), R/X (Memory Optimized), I/D (Storage Optimized), P/G (Accelerated Computing), Hpc (High Performance Compute)
+44. **Instance store** = ephemeral (data lost on stop/terminate); **EBS** = persistent storage
+45. **Elastic IP** = static public IP that persists across stop/start; **Public IP** changes on every stop/start; **Private IP** is retained
+46. **Instance Profile** = IAM Role attached to EC2; enables EC2 to access AWS services without storing credentials
+47. **User Data** = bash script that runs once at first boot; **Instance Metadata** = `http://169.254.169.254/latest/meta-data/` (accessible only from within EC2)
+48. **AWS CLI `--dry-run`** = checks whether you have required permissions without actually executing the command
+49. **Troubleshooting Knowledge Base** = structured document (Excel/CSV) tracking issues, symptoms, root causes, and resolutions for consistent incident response
 
 ### Quick Memory Aids
 ```
@@ -682,5 +707,5 @@ Global Tables → DynamoDB across multiple regions
 
 ---
 
-*Consolidated from daily lecture notes, Weeks 3–10 | AWS re/Start Cohort 3: Project CloudIgnite*
-*Last updated: June 6, 2026 (includes June 6 notes)*
+*Consolidated from daily lecture notes, Weeks 3–11 | AWS re/Start Cohort 3: Project CloudIgnite*
+*Last updated: June 9, 2026 (includes June 8–9 notes)*
