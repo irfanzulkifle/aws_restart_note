@@ -42,7 +42,7 @@ This repository serves as:
 - 🔄 AWS Cloud Practitioner (CLF-C02) Preparation
 
 **Current Week:** Week 11
-**Total Daily Notes:** 33
+**Total Daily Notes:** 35
 
 ## Repository Structure
 
@@ -98,6 +98,7 @@ daily_notes/
 │   ├── 2026-06-06.md
 │   └── weekly_summary.md
 ├── week_11/
+│   ├── 2026-06-08.md
 │   ├── 2026-06-09.md
 │   └── weekly_summary.md
 
