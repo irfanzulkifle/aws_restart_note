@@ -1,5 +1,5 @@
 # AWS Certified Cloud Practitioner (CLF-C02) — Exam Cheat Sheet
-**Consolidated from Cohort 3: Project CloudIgnite lecture notes (Weeks 3–10)**
+**Consolidated from Cohort 3: Project CloudIgnite lecture notes (Weeks 3–11)**
 
 ---
 

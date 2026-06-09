@@ -98,6 +98,7 @@ daily_notes/
 │   ├── 2026-06-06.md
 │   └── weekly_summary.md
 ├── week_11/
+│   ├── 2026-06-09.md
 │   └── weekly_summary.md
 
 exam_prep/
