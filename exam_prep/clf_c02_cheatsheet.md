@@ -662,6 +662,10 @@ Private Subnet ─── RDS Database ─── DB Security Group (3306 from web
 34. **Reliability** = works as expected (MTBF); **Availability** = is running (% uptime "nines")
 35. **High Availability** = Fault Tolerance + Scalability + Recoverability — know all 3
 36. **Auto Scaling** = stop guessing capacity (well-architected principle)
+37. **RDS Security Group** = bridge between EC2 and RDS; source = Web SG, not IP
+38. **Aurora** has automatic Multi-AZ — do NOT manually create replicas
+39. **DMS** = Database Migration Service (on-prem → AWS); **mysqldump + S3** = manual method for small DBs
+40. **SSM Session Manager** = browser-based EC2 access without SSH; no port 22/key pairs needed
 
 ### Quick Memory Aids
 ```

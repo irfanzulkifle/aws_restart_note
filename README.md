@@ -41,8 +41,8 @@ This repository serves as:
 - ✅ SQL & Database Fundamentals
 - 🔄 AWS Cloud Practitioner (CLF-C02) Preparation
 
-**Current Week:** Week 10
-**Total Daily Notes:** 32
+**Current Week:** Week 11
+**Total Daily Notes:** 33
 
 ## Repository Structure
 
@@ -97,7 +97,8 @@ daily_notes/
 │   ├── 2026-06-05.md
 │   ├── 2026-06-06.md
 │   └── weekly_summary.md
-└── weekly_summary_index.md
+├── week_11/
+│   └── weekly_summary.md
 
 exam_prep/
 └── clf_c02_cheatsheet.md
