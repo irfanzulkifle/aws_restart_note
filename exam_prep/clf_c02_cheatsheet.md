@@ -691,6 +691,35 @@ Private Subnet ─── RDS Database ─── DB Security Group (3306 from web
 47. **User Data** = bash script that runs once at first boot; **Instance Metadata** = `http://169.254.169.254/latest/meta-data/` (accessible only from within EC2)
 48. **AWS CLI `--dry-run`** = checks whether you have required permissions without actually executing the command
 49. **Troubleshooting Knowledge Base** = structured document (Excel/CSV) tracking issues, symptoms, root causes, and resolutions for consistent incident response
+50. **EC2 instance lifecycle:** pending → running → stopping → stopped → terminated; **terminated is permanent and unrecoverable**
+51. **Stopped EC2 is still billed for EBS storage** (no compute charge, but EBS persists); also billed during the brief "stopping" transition
+52. **Delete on Termination** setting controls whether the root EBS volume is removed when the instance terminates (default = Yes)
+53. **Elastic Beanstalk** = PaaS — AWS manages OS, runtime, scaling, health; you upload code; **no additional charge** (pay only for underlying EC2/EBS/RDS); supports Java, .NET, PHP, Node.js, Python, Ruby, Go, Docker
+54. **IaaS vs PaaS vs Serverless:** EC2 = IaaS (you manage OS), Elastic Beanstalk = PaaS (AWS manages OS/runtime), Lambda = Serverless (AWS manages everything)
+55. **AMI deprecation:** custom AMIs deprecated **~2 years** after creation; existing instances keep running, but new launches are **blocked** (critical to refresh AMI in time for ASGs)
+56. **ALB (Application Load Balancer):** Layer 7 (HTTP/HTTPS/gRPC); supports **path-based** and **host-based routing**, TLS termination, target groups, listeners, health checks, native IPv6, deletion protection
+57. **NLB (Network Load Balancer):** Layer 4 (TCP/UDP/TLS); extreme performance/low latency (hundreds of thousands of req/sec); static IP per AZ; good for gaming and bursty traffic
+58. **GWLB (Gateway Load Balancer):** Layer 3/4; routes traffic through third-party virtual security/inspection appliances
+59. **CLB (Classic Load Balancer):** legacy — mix of ALB+NLB features; **deprecated, avoid for new designs**
+60. **ASG capacity:** **Minimum** (floor — never below), **Desired** (target), **Maximum** (ceiling — never above)
+61. **ASG scaling policy types:** **Target Tracking** (maintain a metric at target, e.g., CPU 50%), **Step Scaling** (reacts to size of CloudWatch alarm breach), **Simple Scaling**, **Scheduled Scaling**
+62. **ASG anti-thrashing guards:** **Cooldown Period** (default 300s — no new actions after a scaling event), **Warm-Up Period** (default 300s — new instance given time to be ready), **Alarm Sustain Period** (alarm must remain in breach for a duration before triggering)
+63. **ASG termination policies:** Default, Oldest Instance, **Newest Instance** (useful when a new config fails), Oldest Launch Configuration, Closest to Next Instance Hour
+64. **To force ASG to launch new instances** → increase the **minimum capacity** (ASG launches to meet the new floor)
+65. **If all newly launched ASG instances fail** → check the **Launch Template and AMI** (they define instance config/behavior)
+66. **Route 53 routing policies:** **Simple** (single resource), **Weighted** (% split — used for blue-green), **Latency-based** (lowest response time), **Failover** (primary → secondary), **Geolocation** (user's location), **Geoproximity** (physical distance), **Multi-value** (up to 8 random healthy), **IP-based** (user IP block)
+67. **Geolocation vs Geoproximity vs Latency** (commonly confused): **Geolocation** = where the user **is**; **Geoproximity** = physical **distance** to resources; **Latency** = measured **response time**
+68. **Route 53 distributes traffic across REGIONS**; **ALB distributes traffic only within ONE region**
+69. **CloudFront (CDN):** global network of **Edge Locations** + **Regional Edge Caches**; speeds static and dynamic content; for live streaming, the origin keeps 1 connection to the edge and the edge fans out to viewers (greatly reduces origin load)
+70. **Creating an IAM user alone is not enough** — must also add a **login profile** (password) AND attach a **policy**; otherwise the user cannot sign in or do anything
+71. **AWS access keys** = Access Key ID + Secret Access Key; **secret is shown ONCE at creation** and cannot be retrieved later
+72. **S3 buckets are PRIVATE by default**; public access requires **disabling Block Public Access** + **enabling ACLs** (Object Ownership) + **bucket policy** allowing public read
+73. **S3 static website endpoint:** `http://<bucket>.s3-website-<region>.amazonaws.com`
+74. **`aws s3 sync`** uploads only **changed** files (preferred for automation); `aws s3 cp --recursive` re-uploads **everything** every run
+75. **AMIs are region-specific** — an AMI ID valid in one region will NOT work in another
+76. **IAM Roles / Instance Profiles** = preferred way to give EC2 AWS access (no stored credentials, temporary auto-rotated keys); **exam-favoured over long-term access keys**
+77. **CloudWatch alarms** drive ASG scaling actions — when a metric (e.g., CPU > 50%) breaches the target, the alarm fires and the ASG launches more instances
+78. **Decoupled / scalable architecture pattern:** `Route 53 → ALB (public subnets) → ASG/EC2 (private subnets) → RDS (shared)`; static/media content offloaded to S3 + CDN
 
 ### Quick Memory Aids
 ```
@@ -708,4 +737,4 @@ Global Tables → DynamoDB across multiple regions
 ---
 
 *Consolidated from daily lecture notes, Weeks 3–11 | AWS re/Start Cohort 3: Project CloudIgnite*
-*Last updated: June 9, 2026 (includes June 8–9 notes)*
+*Last updated: June 13, 2026 (includes June 8–13 notes)*
