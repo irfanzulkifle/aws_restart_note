@@ -1,5 +1,5 @@
 # AWS Certified Cloud Practitioner (CLF-C02) — Exam Cheat Sheet
-**Consolidated from Cohort 3: Project CloudIgnite lecture notes (Weeks 3–11)**
+**Consolidated from Cohort 3: Project CloudIgnite lecture notes (Weeks 3–12)**
 
 ---
 
@@ -720,6 +720,50 @@ Private Subnet ─── RDS Database ─── DB Security Group (3306 from web
 76. **IAM Roles / Instance Profiles** = preferred way to give EC2 AWS access (no stored credentials, temporary auto-rotated keys); **exam-favoured over long-term access keys**
 77. **CloudWatch alarms** drive ASG scaling actions — when a metric (e.g., CPU > 50%) breaches the target, the alarm fires and the ASG launches more instances
 78. **Decoupled / scalable architecture pattern:** `Route 53 → ALB (public subnets) → ASG/EC2 (private subnets) → RDS (shared)`; static/media content offloaded to S3 + CDN
+79. **AWS Lambda** = fully managed, **event-driven serverless compute**; you only build & deploy code and monitor the application — AWS handles everything else
+80. **Lambda billing = per-invocation + duration** (sub-second metering); no charge while idle, in contrast to EC2 (pay per hour even when idle)
+81. **Lambda max execution time = 15 minutes per invocation** (not a daily limit); tasks exceeding this return an error
+82. **Lambda Layers** = packages of shared libraries/dependencies attached separately from the function code; keeps handler clean and lets you reuse dependencies across functions
+83. **Lambda execution role** = IAM role that grants the function its AWS permissions (e.g., CloudWatch Logs, VPC access); passed when creating the function
+84. **Amazon Route 53** = AWS managed **DNS web service**; supports Simple, Weighted, Latency, Failover, Geolocation, Geoproximity, Multi-value, and IP-based routing policies
+85. **Route 53 failover routing** = active/passive DNS routing: primary serves traffic, secondary takes over automatically when health checks fail
+86. **Route 53 health check** = continuously monitors an endpoint; **failover threshold = number of failed checks** before marking unhealthy (e.g., threshold 2 = mark unhealthy after 2 consecutive failures)
+87. **TTL (Time To Live)** in DNS = how long a record is cached by clients/resolvers before re-querying (e.g., 15s for fast failover testing)
+88. **A record** = DNS record mapping a name to an **IPv4** address; **AAAA record** = IPv6
+89. **Amazon API Gateway** = fully managed AWS service to **create, publish, and maintain APIs** (REST and others); commonly paired with Lambda for serverless APIs
+90. **API Gateway integrations** = Lambda, EC2, DynamoDB, Kinesis, and VPC resources; supports an **API Gateway cache** (cache miss → forward to backend)
+91. **AWS Step Functions** = **serverless orchestration** of workflows (state machine) — coordinates multiple Lambda functions/microservices with dependencies
+92. **Step Functions building blocks:** **state machine** = the workflow; **state** = a step; **task** = the work performed at a state (exam-style fact: a Task does the work)
+93. **Sequential vs. parallel in Step Functions:** sequential = Task 1 → Task 2 → Task 3; parallel = Task 1 and Task 2 run together, Task 3 waits for both (parallel + join)
+94. **Container** = app + dependencies in a **resource-isolated process that shares the host OS kernel** (lightweight, starts in seconds, portable)
+95. **Virtual Machine (VM)** = full **guest OS on a hypervisor** (heavy, several GB, slower to start); runs on top of a hypervisor
+96. **VM stack:** Hardware → Host OS → Hypervisor → [Guest OS + App] × N; **Container stack:** Hardware → Host OS → Docker Engine → [Container (app + deps)] × N
+97. **"Works on my machine" problem** = environment mismatch between dev and prod; containers bundle the environment so what works locally works in deployment
+98. **Docker** = platform/tool to **build, manage, and run containers**; not AWS-specific (install on your laptop)
+99. **Docker components:** **Dockerfile** = blueprint (base OS, apps, env vars); **Docker image** = built immutable artifact; **registry** = image store (Docker Hub, ECR); **container** = running instance of an image
+100. **Amazon ECR** (Elastic Container Registry) = fully managed **Docker image registry** on AWS (like Docker Hub)
+101. **Amazon ECS** (Elastic Container Service) = AWS-native **container orchestration for Docker** (create, launch, run containers)
+102. **Amazon EKS** (Elastic Kubernetes Service) = managed **Kubernetes** on AWS (no control plane/cluster to operate); Kubernetes is open-source and portable
+103. **AWS Fargate** = **serverless compute engine for containers** (ECS/EKS) — no EC2 to manage, AWS handles instances/scaling/patching/load balancing
+104. **Container compute choices for ECS/EKS:** (1) **Fargate** = serverless, AWS manages EC2; (2) **your own EC2 cluster** = cheaper but you patch & scale
+105. **Containers run on EC2 under the hood** (Fargate abstracts this; with your own cluster you see the EC2s)
+106. **S3 → Lambda → SNS** = canonical **event-driven, serverless** pattern: S3 upload event invokes Lambda, Lambda publishes to SNS topic for email/notification
+107. **Amazon SNS** (Simple Notification Service) = **pub/sub messaging** for notifications (email, SMS, HTTP endpoints); topic types: **Standard** (not FIFO for typical use)
+108. **Amazon EventBridge** (formerly CloudWatch Events) = event bus / scheduler with **cron** support; can trigger Lambda on a schedule (e.g., daily report)
+109. **AWS Systems Manager Parameter Store** = secure store for **configuration values and secrets**; EC2/Lambda read parameters at runtime — **don't hard-code credentials**
+110. **ARN** = Amazon Resource Name; **unique identifier for an AWS resource** (e.g., `arn:aws:iam::123:role/MyRole`); exam gotcha: IAM role ARN ≠ SNS topic ARN ≠ SNS subscription ARN
+111. **Amazon RDS as a managed database** = AWS handles **backups, patching, maintenance, availability** — textbook example of the **Shared Responsibility Model** in action (reduces operational labor vs. self-managed DB on EC2)
+112. **DB Subnet Group** = a set of subnets spanning **≥2 Availability Zones** that an RDS instance can use (RDS requires a multi-AZ subnet group)
+113. **mysqldump** = MySQL utility that exports a database to a backup file (schema + data); common manual migration method (mysqldump → S3 → import to RDS)
+114. **Three ways to access/interact with AWS:** **Management Console** (GUI), **AWS CLI** (terminal), **AWS SDK** (programmatic, e.g., **boto3** for Python)
+115. **HTTP methods (REST verbs):** **GET** = read, **POST** = create, **PUT** = update, **DELETE** = remove
+116. **HTTP status code families:** **1xx** informational; **2xx** success (200 OK, 201 Created, 202 Accepted); **3xx** redirect; **4xx** client error (401 Unauthorized, 403 Forbidden, 404 Not Found); **5xx** server error (500, 502)
+117. **Environment variables in Lambda** = store config (ARNs, feature flags) outside the code; **casing matters** (e.g., `topicARN`); don't hard-code secrets
+118. **VPC ID vs. Security Group ID:** VPC IDs start with `vpc-`, security group IDs with `sg-` — never mix them up in CLI commands
+119. **Serverless** = you run code without provisioning/managing servers; AWS manages the infrastructure. Lambda, Fargate, API Gateway, and Step Functions are AWS serverless services
+120. **Lambda destinations** = on success/failure, Lambda can send result info to another target (e.g., another S3 bucket, SNS, EventBridge) — separate from the Lambda's own execution output
+121. **CIDR block conflicts** = two subnets cannot have overlapping CIDR blocks; if wrong, change the block (don't necessarily delete the subnet)
+122. **Lambda free tier** = **1 million requests per month** + compute time (verify current AWS docs for exact GB-seconds allowance)
 
 ### Quick Memory Aids
 ```
@@ -736,5 +780,5 @@ Global Tables → DynamoDB across multiple regions
 
 ---
 
-*Consolidated from daily lecture notes, Weeks 3–11 | AWS re/Start Cohort 3: Project CloudIgnite*
-*Last updated: June 13, 2026 (includes June 8–13 notes)*
+*Consolidated from daily lecture notes, Weeks 3–12 | AWS re/Start Cohort 3: Project CloudIgnite*
+*Last updated: June 16, 2026 (includes June 15–16 notes)*
