@@ -14,7 +14,7 @@
 | **Week 9** | May 25–30 | Database Fundamentals, SQL (DDL, DML, DQL), NULL, Aggregate Functions, MySQL Labs | [week_09/weekly_summary.md](./week_09/weekly_summary.md) |
 | **Week 10** | Jun 3–6 | SQL Advanced, Amazon RDS, Aurora, DynamoDB, CAF, Well-Architected Framework, SQL JOINs, Normalization | [week_10/weekly_summary.md](./week_10/weekly_summary.md) |
 | **Week 11** | Jun 8–13 | SysOps & Automation, AWS CLI, AWS Systems Manager, S3 Static Website Hosting, EC2 Deep Dive, EC2 Lifecycle, Elastic Beanstalk, ELB (ALB/NLB/GWLB/CLB), Auto Scaling Groups, Route 53, CloudFront, IAM Users & Policies | [week_11/weekly_summary.md](./week_11/weekly_summary.md) |
-| **Week 12** | Jun 15–16 | AWS Lambda, Route 53 Failover, SNS Notifications, REST APIs, API Gateway, Step Functions, Containers vs VMs, Docker, ECR/ECS/EKS/Fargate, Amazon RDS (managed) | [week_12/weekly_summary.md](./week_12/weekly_summary.md) |
+| **Week 12** | Jun 15–20 | AWS Lambda, Route 53 Failover, SNS, REST APIs, API Gateway, Step Functions, Containers/Docker (ECR/ECS/EKS/Fargate), Managed RDS, Amazon VPC Deep Dive (Subnets, IGW, NAT, Peering, Transit Gateway, VPN, Direct Connect, Endpoints), Security Groups vs. NACLs, Bastion Hosts, VPC Flow Logs, EBS/EFS/S3 Storage, S3 Storage Classes & Intelligent-Tiering, Versioning/Object Lock, Storage Gateway, Snow Family | [week_12/weekly_summary.md](./week_12/weekly_summary.md) |
 
 ---
 
@@ -30,5 +30,5 @@ Week 8:  Python Programming & DevOps
 Week 9:  Database Fundamentals & SQL
 Week 10: Advanced SQL & Amazon RDS
 Week 11: SysOps & Automation, AWS CLI, Systems Manager, S3 Static Website, EC2 Deep Dive, ELB, Auto Scaling, Route 53, CloudFront, IAM
-Week 12: AWS Lambda, Route 53 Failover, REST APIs, API Gateway, Step Functions, Containers, Docker, ECR/ECS/EKS/Fargate, Managed RDS
+Week 12: AWS Lambda, Route 53 Failover, REST APIs, API Gateway, Step Functions, Containers, Docker, ECR/ECS/EKS/Fargate, Managed RDS, VPC Deep Dive (Subnets, IGW, NAT, Peering, Transit Gateway, VPN/Direct Connect, Endpoints, SG vs NACL, Bastion, Flow Logs), Cloud Storage (EBS/EFS/S3), Storage Classes & Intelligent-Tiering, Versioning/Object Lock, Storage Gateway, Snow Family
 ```

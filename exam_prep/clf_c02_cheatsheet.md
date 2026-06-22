@@ -764,6 +764,45 @@ Private Subnet ─── RDS Database ─── DB Security Group (3306 from web
 120. **Lambda destinations** = on success/failure, Lambda can send result info to another target (e.g., another S3 bucket, SNS, EventBridge) — separate from the Lambda's own execution output
 121. **CIDR block conflicts** = two subnets cannot have overlapping CIDR blocks; if wrong, change the block (don't necessarily delete the subnet)
 122. **Lambda free tier** = **1 million requests per month** + compute time (verify current AWS docs for exact GB-seconds allowance)
+123. **Amazon VPC** = a logically isolated virtual network in AWS; **Region-scoped** and can span **all AZs** in that Region, while a **subnet lives in exactly one AZ** (a subnet does not span AZs)
+124. **VPC CIDR block** must be between **/16 and /28** using **RFC 1918** private ranges (10.x, 172.16–31.x, 192.168.x); AWS reserves **5 IPs per subnet** (network, VPC router, DNS, future, broadcast)
+125. **Public subnet** = route table has `0.0.0.0/0 → Internet Gateway` (IGW); **private subnet** = no IGW route (uses **NAT Gateway** for outbound-only internet)
+126. **NAT Gateway** = AWS-managed outbound-only gateway for private subnets; must live in a **public subnet**, requires an **Elastic IP**, supports TCP/UDP/ICMP; deploy across **multiple AZs** for high availability
+127. **VPC Peering is NOT transitive** — A peered to B and B peered to C does NOT connect A and C (must peer them directly); use **Transit Gateway** for many VPCs
+128. **VPC Endpoints:** **Gateway Endpoint** = private access to **only S3 and DynamoDB**, **free**; **Interface Endpoint (PrivateLink)** = private access to other AWS services, **paid**
+129. **Site-to-Site VPN** = encrypted tunnel over the public internet to on-premises (use when **encryption required**); **Direct Connect** = dedicated private physical line to AWS (can be combined with VPN)
+130. **Security Group vs. NACL — the exam favorite:** SG = **instance-level, stateful, allow-only** (return traffic auto-allowed); NACL = **subnet-level, stateless, allow + deny, numbered rules evaluated lowest-number-first (first match wins)**
+131. **NACL default rules:** default NACL = **allow all** in/out; custom NACL = **deny all** until you add an allow rule; **a low-numbered DENY overrides a higher-numbered ALLOW** (e.g., Rule #40 DENY port 22 blocks SSH before Rule #100 ALLOW all)
+132. **Bastion host** = a public-subnet EC2 used as a secure jump box to SSH into private-subnet instances; the private instance's SG should allow port 22 **only from the bastion/VPC CIDR**
+133. **VPC Flow Logs** = capture accepted/rejected IP traffic metadata for a VPC, stored in **S3 or CloudWatch**; log lines include ENI, source IP, port, action (ACCEPT/REJECT); timestamps are in **Unix epoch**; **analyze with `grep REJECT`** to find blocked traffic
+134. **Connectivity troubleshooting order:** instance running → Security Group allows ports → NACL allows traffic → Route Table has the right routes → IGW attached to VPC
+135. **Amazon EBS (Elastic Block Store)** = persistent block storage attached to EC2; **single-AZ (zonal)** — a volume can only attach to EC2 in the **same Availability Zone**; every EC2 needs at least one EBS volume as its boot drive
+136. **EBS volume types:** **SSD** = io1/io2 (highest IOPS, databases, most expensive) and gp3/gp2 (general purpose, boot volumes, virtual desktops); **HDD** = st1 (throughput-optimized, streaming/big data, NOT a boot volume) and sc1 (cold, cheapest, NOT a boot volume)
+137. **IOPS vs. Throughput:** **IOPS** = read/write **operations** per second (databases); **Throughput** = amount of **data** per second (streaming); **SSD = IOPS**, **HDD = Throughput** (or cheap bulk)
+138. **EBS snapshots** = point-in-time, **incremental** backups of EBS volumes stored in **S3**; can be **copied cross-Region** to create a volume in another Region; **restore = create new volume from snapshot** (keeps the file system intact)
+139. **Data Lifecycle Manager (DLM)** automates EBS snapshot creation, retention, and deletion — **always set retention** (24 snapshots/day = ~720/month, surprise bill); DLM requires the **AWS Data Lifecycle Manager default role** (`aws dlm create-default-role`)
+140. **Instance Store = ephemeral** block storage tied to the instance host (very fast); **data is LOST on stop or terminate** (reboot is OK); use only for **cache, buffers, scratch/temp data** — never for permanent data
+141. **Amazon EFS (Elastic File System)** = shared NFS file system mounted by **many EC2s at once** (block storage like EBS is NOT shared); **Linux only**; auto-scales (no capacity management); petabyte-scale
+142. **EFS vs FSx:** **EFS = Linux only, NFS protocol**; **FSx = Windows AND Linux**, multi-purpose file system
+143. **Amazon S3** = **object storage** with **11 nines (99.999999999%) durability**, **strong read-after-write consistency**, effectively unlimited capacity; concepts: **bucket** (Region-scoped), **object**, **key** (unique within bucket)
+144. **S3 storage classes (cost ↓ left → right, retrieval gets slower):** Standard → Intelligent-Tiering → Standard-IA → One Zone-IA → Glacier Instant Retrieval → Glacier Flexible Retrieval → **Glacier Deep Archive** (cheapest, **12–48 hr** retrieval)
+145. **S3 Intelligent-Tiering** = auto-moves objects between tiers (Standard / Standard-IA / Glacier) based on access patterns — **no manual tracking required**; ideal for unknown or changing access patterns
+146. **S3 One Zone-IA** = single AZ; data **lost if AZ fails**; use only for **reproducible** data
+147. **S3 Standard-IA / Glacier cost caveat:** cheaper storage per GB but **retrieval fees** — **frequent access to IA/Glacier can cost MORE than Standard**; **archive tip = zip many tiny files into one** to reduce per-access cost
+148. **S3 Versioning** = keeps multiple object versions; states are **Disabled / Enabled / Suspended**; deleting an object adds a **delete marker** instead of erasing it (restore by removing marker or fetching `--version-id`); **versioning must be enabled BEFORE the delete to protect the object**
+149. **S3 Object Lock (WORM)** = Write Once Read Many; **retention period** = cannot delete for N days; **legal hold** = indefinite lock until removed; used for **compliance and governance** (e.g., financial, healthcare)
+150. **S3 security:** objects are **private by default**; **Block Public Access** at account/bucket level; **pre-signed URLs** grant **time-limited** access to a private object; **CORS** needed when S3 hosts a **static website**
+151. **S3 → Lambda → SNS** = canonical **event-driven, serverless** pattern; S3 event (e.g., suffix `.txt`) invokes Lambda, Lambda publishes to SNS topic for email/SMS/HTTP notification
+152. **Three ways to access AWS:** **Management Console** (GUI), **AWS CLI** (terminal), **AWS SDK** (programmatic — `boto3` for Python); same services, three interfaces
+153. **Lambda IAM execution role gotcha:** choosing "no permissions" tries to **create a new IAM role** and fails with "not authorized to perform create role…" — **fix = use an existing IAM role** that already has the required permissions
+154. **S3 object keys must NOT contain spaces** — a space splits the key into two arguments and causes `NoSuchKey` errors in Linux/CLI; **escape with `\` or rename the file**
+155. **DB Subnet Group** = a set of subnets spanning **≥2 Availability Zones** that an RDS instance can use; **RDS requires a multi-AZ subnet group**
+156. **RDS DB Security Group source = Web-tier Security Group** (NOT an IP) — allows tier-to-tier access control so only the application tier can reach the database
+157. **Amazon RDS** = managed relational database; AWS handles **backups, patching, maintenance, availability**; place in **private subnets**; **DB Subnet Group ≥2 AZs**; repoint the app to RDS via **Parameter Store** (`cafe/dbUrl` → RDS endpoint)
+158. **AWS Storage Gateway** = hybrid connection between on-premises data center and AWS storage (file gateway, volume gateway, tape gateway); use cases: **disaster recovery, tiering, migration**
+159. **AWS Snow Family** = physical devices AWS ships to you for **offline bulk data transfer**; use when bandwidth is insufficient (e.g., **50 TB over 100 Mbps ≈ 12.5 MB/s = weeks/months**); device size scales from Snowcone to Snowmobile (truck-scale for petabytes)
+160. **Three components of cloud storage:** **client device** → **internet** → **data center**
+161. **VPC troubleshoot checklist (the lab exam-favorite):** (1) EC2 instance running? (2) Security Group allows the required ports? (3) NACL allows the traffic (check numbered rules, lowest-first)? (4) Route Table has the right routes (IGW for public, NAT for private)? (5) Internet Gateway attached to VPC? Public/Elastic IP correct?
 
 ### Quick Memory Aids
 ```
@@ -776,9 +815,28 @@ DynamoDB     → NoSQL / Key-value (flexible schema, massive scale)
 
 DAX          → DynamoDB's built-in cache (like Redis, but only for DynamoDB)
 Global Tables → DynamoDB across multiple regions
+
+EBS          → Block storage, single-AZ, persistent (boot volume)
+Instance Store → Ephemeral block storage (lost on stop/terminate)
+EFS          → Shared NFS file system, Linux-only (multi-EC2)
+FSx          → Windows + Linux file system
+S3           → Object storage, 11 nines durability, buckets/objects/keys
+
+Glacier Deep Archive → Cheapest S3 tier, 12–48 hr retrieval
+Intelligent-Tiering  → S3 auto-moves objects by access pattern
+Object Lock          → WORM for compliance (retention + legal hold)
+
+VPC Peering → NOT transitive (A↔B + B↔C ≠ A↔C)
+Gateway Endpoint → Free, S3/DynamoDB only
+Interface Endpoint (PrivateLink) → Paid, other AWS services
+NAT Gateway → Public subnet + Elastic IP, outbound only
+Bastion Host → Public jump box into private subnets
+
+SG vs NACL → SG = stateful/instance/allow-only
+             NACL = stateless/subnet/allow+deny/numbered/lowest-first
 ```
 
 ---
 
 *Consolidated from daily lecture notes, Weeks 3–12 | AWS re/Start Cohort 3: Project CloudIgnite*
-*Last updated: June 16, 2026 (includes June 15–16 notes)*
+*Last updated: June 20, 2026 (includes June 15, 16, 18, 19, and 20 notes — VPC deep dive, Cloud Storage, and lab recap)*
