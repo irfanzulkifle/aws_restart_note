@@ -1,5 +1,5 @@
 # AWS Certified Cloud Practitioner (CLF-C02) — Exam Cheat Sheet
-**Consolidated from Cohort 3: Project CloudIgnite lecture notes (Weeks 3–12)**
+**Consolidated from Cohort 3: Project CloudIgnite lecture notes (Weeks 3–14)**
 
 ---
 
@@ -803,6 +803,27 @@ Private Subnet ─── RDS Database ─── DB Security Group (3306 from web
 159. **AWS Snow Family** = physical devices AWS ships to you for **offline bulk data transfer**; use when bandwidth is insufficient (e.g., **50 TB over 100 Mbps ≈ 12.5 MB/s = weeks/months**); device size scales from Snowcone to Snowmobile (truck-scale for petabytes)
 160. **Three components of cloud storage:** **client device** → **internet** → **data center**
 161. **VPC troubleshoot checklist (the lab exam-favorite):** (1) EC2 instance running? (2) Security Group allows the required ports? (3) NACL allows the traffic (check numbered rules, lowest-first)? (4) Route Table has the right routes (IGW for public, NAT for private)? (5) Internet Gateway attached to VPC? Public/Elastic IP correct?
+162. **S3 Glacier storage classes and retrieval times:** Instant Retrieval (ms), Flexible Retrieval (standard = 3-5 hrs, expedited = 1-5 min, bulk = 5-12 hrs), Deep Archive (up to 48 hrs); frequently tested — match use case to retrieval speed
+163. **RAM/memory utilization is NOT a standard CloudWatch metric** — requires the **CloudWatch agent** as a custom metric (one of the most frequently tested details)
+164. **CloudWatch basic (5-min, free) vs detailed (1-min, extra cost) monitoring**
+165. **CloudWatch vs CloudTrail vs Config:** CloudWatch = resource health/monitoring; CloudTrail = API activity audit (who did what); AWS Config = resource compliance/rules
+166. **AWS Organizations key components:** Root (management account), OU (account group, up to 5 levels nested), Member account, SCP (restricts services per OU); consolidated billing = one bill + per-OU cost view
+167. **AWS Budgets alerts + forecasted alerts — NOTIFY only, does NOT stop resources** (frequently tested nuance)
+168. **Trusted Advisor five pillars:** Cost Optimization, Performance, Security, Fault Tolerance, Service Limits; core checks = free, full checks = Business/Enterprise
+169. **Support plans:** Basic (free, no tech cases), Developer (~$29/mo, business-hours email, one contact), Business (~$100/mo, 24/7 phone/chat, full Trusted Advisor), Enterprise (~$15K/mo, dedicated TAM, <15-min critical response)
+170. **TAM (Technical Account Manager) = Enterprise only** (frequently tested); **24/7 phone/chat = Business+**
+171. **CloudFormation = IaC service** (template = code/program, stack = running instantiation/process, change set = preview of updates); **automatic rollback on error; incremental updates via change sets**
+172. **CloudFormation drift:** manual out-of-band changes detected; unresolved drift blocks further updates
+173. **CloudFormation `--on-failure DO_NOTHING`** keeps failed resources for debugging (default rolls back, deleting evidence); **DependsOn** = creation order, **WaitCondition** = wait for in-instance success signal
+174. **AMI = blueprint/snapshot for EC2, region-scoped** (must copy to use in another region); launch template = full recipe (AMI + instance type + subnet + key pair + SG) with versioning
+175. **DynamoDB key facts:** key-value/document NoSQL, flexible schema, single-digit-ms latency, unlimited throughput/storage; **Scan** = read all items (for non-key attributes), **Query** = use primary key; **DAX** = in-memory cache for hot reads
+176. **CloudFront = CDN** (delivers static content with low latency via Edge Locations); **S3 = stores** objects; **Glacier = archives** (not for active delivery)
+177. **Global vs regional services:** **Global** = IAM, CloudFront, Route 53; **Regional** = EC2, AMI (region-bound)
+178. **User data runs at initialization** (after instance creation, not during creation)
+179. **Instance metadata IP: `169.254.169.254`** — exam trap often swaps digits
+180. **CLI `--dry-run`** checks permissions without executing the action; **table** = most readable CLI output format
+181. **Multi-AZ deployment = availability/fault tolerance** (exam heuristic: whenever question says availability/fault tolerance, answer = multiple AZs)
+182. **EC2 pricing models:** On-Demand (flexible, no commitment), Reserved (1-3 yr, cheaper for steady workloads), Spot (up to ~90% off, reclaimable in ~1-3 min, fault-tolerant/non-critical only)
 
 ### Quick Memory Aids
 ```
@@ -838,5 +859,5 @@ SG vs NACL → SG = stateful/instance/allow-only
 
 ---
 
-*Consolidated from daily lecture notes, Weeks 3–12 | AWS re/Start Cohort 3: Project CloudIgnite*
-*Last updated: June 20, 2026 (includes June 15, 16, 18, 19, and 20 notes — VPC deep dive, Cloud Storage, and lab recap)*
+*Consolidated from daily lecture notes, Weeks 3–14 | AWS re/Start Cohort 3: Project CloudIgnite*
+*Last updated: July 1, 2026 (includes Weeks 13–14: S3 Glacier, CloudWatch Deep Dive, CloudTrail, Organizations, Tagging, Cost Management, SageMaker, Support Plans, Trusted Advisor, AMIs, IaC, CloudFormation, and Certification Prep Assessment)*

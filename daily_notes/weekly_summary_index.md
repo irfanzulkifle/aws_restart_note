@@ -15,6 +15,8 @@
 | **Week 10** | Jun 3–6 | SQL Advanced, Amazon RDS, Aurora, DynamoDB, CAF, Well-Architected Framework, SQL JOINs, Normalization | [week_10/weekly_summary.md](./week_10/weekly_summary.md) |
 | **Week 11** | Jun 8–13 | SysOps & Automation, AWS CLI, AWS Systems Manager, S3 Static Website Hosting, EC2 Deep Dive, EC2 Lifecycle, Elastic Beanstalk, ELB (ALB/NLB/GWLB/CLB), Auto Scaling Groups, Route 53, CloudFront, IAM Users & Policies | [week_11/weekly_summary.md](./week_11/weekly_summary.md) |
 | **Week 12** | Jun 15–20 | AWS Lambda, Route 53 Failover, SNS, REST APIs, API Gateway, Step Functions, Containers/Docker (ECR/ECS/EKS/Fargate), Managed RDS, Amazon VPC Deep Dive (Subnets, IGW, NAT, Peering, Transit Gateway, VPN, Direct Connect, Endpoints), Security Groups vs. NACLs, Bastion Hosts, VPC Flow Logs, EBS/EFS/S3 Storage, S3 Storage Classes & Intelligent-Tiering, Versioning/Object Lock, Storage Gateway, Snow Family | [week_12/weekly_summary.md](./week_12/weekly_summary.md) |
+| **Week 13** | Jun 22–25 | S3 Glacier Archive Storage, Storage Gateway, Data Transfer & Migration Services (Transfer Family, DataSync, Snow Family), S3 Labs & Pre-Signed URLs, CloudWatch Intro & Deep Dive, CloudTrail, AWS Organizations, Resource Tagging, Cost Management (Budgets/Cost Explorer/CUR/Pricing Calculator), SageMaker ML, AWS Support Plans, Trusted Advisor, Cloud Computing & Global Infrastructure Exam Prep | [week_13/weekly_summary.md](./week_13/weekly_summary.md) |
+| **Week 14** | Jun 29 – Jul 1 | AMIs, Launch Templates, Infrastructure as Code (IaC), JSON vs YAML, CloudFormation Deep Dive, Change Sets, Drift Detection, Stack Deletion & Resource Retention, CloudFormation Challenge Lab, Database Services (DynamoDB/Aurora/Redshift/RDS), Billing & Support Plans, Well-Architected Framework, 59-Question Certification Assessment, Spot Instances | [week_14/weekly_summary.md](./week_14/weekly_summary.md) |
 
 ---
 
@@ -31,4 +33,6 @@ Week 9:  Database Fundamentals & SQL
 Week 10: Advanced SQL & Amazon RDS
 Week 11: SysOps & Automation, AWS CLI, Systems Manager, S3 Static Website, EC2 Deep Dive, ELB, Auto Scaling, Route 53, CloudFront, IAM
 Week 12: AWS Lambda, Route 53 Failover, REST APIs, API Gateway, Step Functions, Containers, Docker, ECR/ECS/EKS/Fargate, Managed RDS, VPC Deep Dive (Subnets, IGW, NAT, Peering, Transit Gateway, VPN/Direct Connect, Endpoints, SG vs NACL, Bastion, Flow Logs), Cloud Storage (EBS/EFS/S3), Storage Classes & Intelligent-Tiering, Versioning/Object Lock, Storage Gateway, Snow Family
+Week 13: S3 Glacier Archive, Storage Gateway, Data Transfer & Migration Services (Transfer Family, DataSync, Snow Family), CloudWatch, CloudTrail, AWS Organizations, Resource Tagging, Cost Management, SageMaker ML, Support Plans, Trusted Advisor, Cloud Computing & Global Infrastructure Exam Prep
+Week 14: AMIs, Launch Templates, IaC, CloudFormation (Change Sets, Drift, Stack Deletion, Troubleshooting), Database Services, Billing & Support Review, Well-Architected Framework, Certification Prep Assessment, Spot Instances
 ```
